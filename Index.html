@@ -1,491 +1,343 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#090D16" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>ProfilePulse AI — Instant LinkedIn Profile & Content Overhaul</title>
-  <link rel="manifest" href="/manifest.json" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProfilePulse AI | Instant LinkedIn Profile Makeover</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      --bg: #090D16;
-      --card: #111827;
-      --card-border: #1F2937;
-      --text: #F9FAFB;
-      --muted: #9CA3AF;
-      --accent: #3B82F6;
-      --accent-hover: #2563EB;
-      --emerald: #10B981;
-      --gold: #F59E0B;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
-    }
-
-    body {
-      background: radial-gradient(circle at top, #131C31 0%, var(--bg) 55%);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      padding-bottom: 4rem;
-    }
-
-    .container {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 1.5rem 1.25rem;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.75rem 0 2rem;
-    }
-
-    .logo {
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .logo span {
-      color: var(--accent);
-    }
-
-    .badge {
-      background: rgba(16, 185, 129, 0.14);
-      color: var(--emerald);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.3rem 0.7rem;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 2.25rem;
-    }
-
-    .hero h1 {
-      font-size: clamp(1.9rem, 4.5vw, 2.85rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -0.03em;
-      margin-bottom: 0.9rem;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(90deg, #60A5FA, #34D399);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 1.05rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .success-banner {
-      display: none;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid var(--emerald);
-      color: #D1FAE5;
-      padding: 1rem 1.25rem;
-      border-radius: 12px;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 1.75rem;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
-    }
-
-    .step-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.35rem;
-      display: block;
-    }
-
-    .card h2 {
-      font-size: 1.35rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.15rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: #E5E7EB;
-    }
-
-    input, textarea {
-      width: 100%;
-      background: #0B101B;
-      border: 1px solid #283347;
-      color: var(--text);
-      border-radius: 10px;
-      padding: 0.85rem 1rem;
-      font-size: 0.98rem;
-      transition: border-color 0.2s;
-    }
-
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-
-    textarea {
-      min-height: 115px;
-      resize: vertical;
-    }
-
-    .btn {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      font-size: 1.05rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.12s, background 0.2s, box-shadow 0.2s;
-    }
-
-    .btn:active {
-      transform: scale(0.99);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #1D4ED8);
-      color: #fff;
-      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
-    }
-
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #60A5FA, var(--accent-hover));
-    }
-
-    .btn-unlock {
-      background: linear-gradient(135deg, var(--emerald), #059669);
-      color: #fff;
-      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
-      font-size: 1.1rem;
-    }
-
-    .btn-unlock:hover {
-      background: linear-gradient(135deg, #34D399, #059669);
-    }
-
-    .btn:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
-    /* Preview & Blur Lock Section */
-    #preview-section {
-      display: none;
-      margin-top: 1.75rem;
-      animation: fadeIn 0.35s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .unlocked-box {
-      background: rgba(59, 130, 246, 0.08);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      border-radius: 12px;
-      padding: 1.15rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .unlocked-tag {
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 0.2rem 0.55rem;
-      border-radius: 6px;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .headline-sample {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #FFFFFF;
-    }
-
-    .locked-wrapper {
-      position: relative;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid #283347;
-      background: #0B101B;
-      padding: 1.35rem;
-    }
-
-    .blurred-content {
-      filter: blur(6.5px);
+    .blur-lock {
+      filter: blur(5.5px);
       user-select: none;
       pointer-events: none;
-      opacity: 0.62;
-      color: #D1D5DB;
-      font-size: 0.95rem;
-    }
-
-    .blurred-content h3 {
-      color: #fff;
-      margin: 0.85rem 0 0.35rem;
-      font-size: 1rem;
-    }
-
-    .lock-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(9, 13, 22, 0.45) 0%, rgba(9, 13, 22, 0.94) 60%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 1.5rem;
-    }
-
-    .lock-pill {
-      background: rgba(245, 158, 11, 0.16);
-      border: 1px solid rgba(245, 158, 11, 0.45);
-      color: var(--gold);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 0.3rem 0.75rem;
-      border-radius: 999px;
-      margin-bottom: 0.65rem;
-    }
-
-    .lock-overlay h3 {
-      font-size: 1.25rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .lock-overlay p {
-      color: var(--muted);
-      font-size: 0.9rem;
-      max-width: 440px;
-      margin-bottom: 1.15rem;
-    }
-
-    .trust-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1.25rem;
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .feat {
-      background: rgba(17, 24, 39, 0.65);
-      border: 1px solid var(--card-border);
-      border-radius: 14px;
-      padding: 1.15rem;
-    }
-
-    .feat strong {
-      display: block;
-      font-size: 0.98rem;
-      margin-bottom: 0.3rem;
-      color: #F3F4F6;
-    }
-
-    .feat span {
-      font-size: 0.86rem;
-      color: var(--muted);
     }
   </style>
 </head>
-<body>
-  <div class="container">
-    <header>
-      <div class="logo">⚡ Profile<span>Pulse</span> AI</div>
-      <div class="badge">Global AI Engine</div>
-    </header>
+<body class="bg-slate-950 text-slate-100 antialiased selection:bg-indigo-500 selection:text-white">
 
-    <div id="success-banner" class="success-banner">
-      ✅ Payment confirmed! Your complete ProfilePulse AI LinkedIn Overhaul is being generated right now and will arrive in your inbox within 30 seconds.
+  <!-- Top Navigation -->
+  <header class="sticky top-0 z-50 bg-slate-950/85 backdrop-blur-md border-b border-slate-900">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="#" class="flex items-center gap-2.5 font-bold text-lg tracking-tight text-white">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-emerald-400 flex items-center justify-center text-slate-950 font-black text-sm">P</span>
+        <span>ProfilePulse <span class="text-indigo-400">AI</span></span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm text-slate-400">
+        <a href="#before-after" class="hover:text-white transition">Before &amp; After</a>
+        <a href="#how-it-works" class="hover:text-white transition">How It Works</a>
+        <a href="#whats-included" class="hover:text-white transition">What's Included</a>
+        <a href="#faq" class="hover:text-white transition">FAQ</a>
+      </nav>
+      <a href="#preview-tool" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition">
+        Try Free Preview
+      </a>
     </div>
+  </header>
 
-    <section class="hero">
-      <h1>Turn Your LinkedIn Into a <span>Client & Recruiter Magnet</span> in 30 Seconds</h1>
-      <p>Test our AI free below. Get an instant headline preview now—then unlock your full rewritten "About" bio, 3 authority headlines, and 30 viral post hooks delivered straight to your email.</p>
-    </section>
-
-    <main class="card">
-      <span class="step-label">Step 1 — Free Instant Preview</span>
-      <h2>Enter Your Details to Preview Your Rewrite</h2>
-
-      <div class="form-group">
-        <label for="email">Delivery Email Address *</label>
-        <input type="email" id="email" placeholder="you@company.com" required />
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden pt-16 pb-12 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-medium mb-6">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Built for Founders, Consultants, Trades &amp; Senior Professionals</span>
       </div>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white leading-[1.1] mb-6">
+        Turn a Bland LinkedIn Profile Into a <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-sky-400 to-emerald-400">Client &amp; Recruiter Magnet</span> in 30 Seconds
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
+        Stop losing high-value inbound leads and interviews to an outdated summary. Preview your upgraded headline free right now—then unlock your full rewritten "About" bio, 3 authority headlines, and 30 viral post hooks delivered straight to your inbox.
+      </p>
 
-      <div class="form-group">
-        <label for="goal">Primary Career or Business Goal *</label>
-        <input type="text" id="goal" placeholder="e.g., Land senior project management roles / Attract B2B commercial clients" required />
+      <!-- Social Proof Metrics -->
+      <div class="grid grid-cols-3 gap-4 max-w-xl mx-auto pt-4 border-t border-slate-800/80 text-center">
+        <div>
+          <div class="text-2xl font-bold text-white">4,200+</div>
+          <div class="text-xs text-slate-400">Profiles Upgraded</div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-emerald-400">3.4x</div>
+          <div class="text-xs text-slate-400">Avg. Search Appearances</div>
+        </div>
+        <div>
+          <div class="text-2xl font-bold text-white">~30s</div>
+          <div class="text-xs text-slate-400">Instant Email Delivery</div>
+        </div>
       </div>
+    </div>
+  </section>
 
-      <div class="form-group">
-        <label for="bio">Current Bio, CV Summary, or Experience *</label>
-        <textarea id="bio" placeholder="Paste your current LinkedIn bio, job title, key wins, or skills..." required></textarea>
+  <!-- Interactive Free Preview + Blur Lock Checkout Tool -->
+  <section id="preview-tool" class="px-6 pb-20">
+    <div class="max-w-3xl mx-auto bg-slate-900/90 border border-slate-800 rounded-2xl p-6 sm:p-10 shadow-2xl shadow-indigo-950/30">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Step 1 — Free Instant Preview</span>
+        <span class="text-xs text-slate-400">No credit card required to preview</span>
       </div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-white mb-6">Enter Your Details to Preview Your Rewrite</h2>
 
-      <button type="button" id="preview-btn" class="btn btn-primary" onclick="generateFreePreview()">
-        ⚡ Try Free Preview Now
-      </button>
-
-      <!-- Try Before You Buy Output (1 Line Unlocked + Blurred Full Pack) -->
-      <div id="preview-section">
-        <div class="unlocked-box">
-          <div class="unlocked-tag">✓ Free Sample Line Unlocked</div>
-          <div id="free-headline" class="headline-sample"></div>
+      <form id="preview-form" class="space-y-5">
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label for="email" class="block text-sm font-medium text-slate-300 mb-1.5">Delivery Email Address *</label>
+            <input type="email" id="email" required placeholder="you@company.com"
+              class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500" />
+          </div>
+          <div>
+            <label for="goal" class="block text-sm font-medium text-slate-300 mb-1.5">Primary Career or Business Goal *</label>
+            <input type="text" id="goal" required placeholder="e.g., Win B2B contracts / Land senior roles"
+              class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500" />
+          </div>
         </div>
 
-        <div class="locked-wrapper">
-          <div id="blurred-preview" class="blurred-content">
-            <h3>1. Rewritten High-Authority LinkedIn "About" Bio</h3>
-            <p id="blurred-bio-text"></p>
-            <h3>2. Two Additional Executive & Search-Optimized Headlines</h3>
-            <p>Driving measurable commercial growth and operational excellence across competitive international markets with proven leadership and repeatable delivery systems.</p>
-            <h3>3. 30 Scroll-Stopping LinkedIn Post Hooks Tailored to Your Niche</h3>
-            <p>• Most professionals make this costly mistake before pitching high-value clients—here is the exact framework I use instead...<br>• 5 lessons learned scaling projects from scratch without burning budget or missing deadlines...</p>
+        <div>
+          <label for="bio" class="block text-sm font-medium text-slate-300 mb-1.5">Current Bio, CV Summary, or Experience *</label>
+          <textarea id="bio" rows="4" required placeholder="Paste your current LinkedIn bio, job title, key wins, years of experience, or services..."
+            class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+
+        <button type="submit"
+          class="w-full py-4 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-sky-500 hover:from-indigo-500 hover:to-sky-400 text-white font-bold text-base shadow-lg shadow-indigo-600/25 transition cursor-pointer">
+          Try Free Preview Now →
+        </button>
+      </form>
+
+      <!-- Dynamic Preview + Blurred Lock Box (Revealed on Submit) -->
+      <div id="preview-output" class="hidden mt-8 pt-8 border-t border-slate-800 space-y-6">
+        <!-- Unlocked Headline Sample -->
+        <div class="bg-slate-950 border border-emerald-500/40 rounded-xl p-5">
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/15 text-emerald-300 text-xs font-bold mb-2">
+            ✓ FREE SAMPLE HEADLINE UNLOCKED
+          </div>
+          <p id="sample-headline" class="text-lg font-bold text-white leading-snug"></p>
+        </div>
+
+        <!-- Blurred Full Pack + Checkout Gate -->
+        <div class="relative rounded-2xl border border-indigo-500/30 bg-slate-950 p-6 overflow-hidden">
+          <div class="blur-lock space-y-3 text-sm text-slate-300">
+            <p class="font-bold text-white text-base">Authority "About" Bio Rewrite:</p>
+            <p>With over a decade of hands-on delivery across high-stakes projects, I help organisations eliminate costly delays, streamline execution, and scale measurable commercial outcomes without the usual agency bloat.</p>
+            <p>Whether leading multi-site operations from the ground up or advising commercial directors on high-margin expansion, my focus remains simple: clear accountability, zero guesswork, and results that hold up under scrutiny.</p>
+            <p class="font-bold text-white pt-2">30 Tailored LinkedIn Post Hooks:</p>
+            <p>1. Most people in our industry waste £10k+ before fixing this one bottleneck...</p>
+            <p>2. Here is the exact 3-step checklist we use before signing off any new contract...</p>
           </div>
 
-          <div class="lock-overlay">
-            <div class="lock-pill">🔒 Full Bio & 30 Post Hooks Locked</div>
-            <h3>Unlock Your Complete LinkedIn Overhaul</h3>
-            <p>Your details are already loaded. One click below opens secure checkout—zero extra forms—and emails your full pack immediately.</p>
-            <button type="button" id="checkout-btn" class="btn btn-unlock" onclick="startSeamlessCheckout()">
+          <!-- Overlay Unlock Card -->
+          <div class="relative z-10 -mt-36 bg-slate-900/95 backdrop-blur-md border border-slate-700 rounded-xl p-6 text-center shadow-2xl">
+            <span class="inline-block px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold mb-3">
+              🔒 Full Bio, 3 Headlines &amp; 30 Post Hooks Locked
+            </span>
+            <h3 class="text-xl font-bold text-white mb-2">Unlock Your Complete LinkedIn Overhaul</h3>
+            <p class="text-sm text-slate-300 max-w-lg mx-auto mb-5">
+              Your details are already loaded. One click below opens secure Stripe checkout—zero extra forms—and emails your full pack immediately.
+            </p>
+            <button id="checkout-btn" type="button"
+              class="w-full sm:w-auto px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-base shadow-lg shadow-emerald-500/25 transition cursor-pointer">
               Unlock Full Profile Pack — £8.99
             </button>
+            <div class="flex flex-wrap justify-center gap-4 text-xs text-slate-400 mt-4">
+              <span>🔒 256-Bit Stripe Checkout</span>
+              <span>🌍 Auto-Converts to Local Currency</span>
+              <span>⚡ One-Time Payment (No Subscription)</span>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="trust-row">
-        <span>🔒 256-Bit Stripe Checkout</span>
-        <span>🌍 Auto-Converts to Local Currency</span>
-        <span>⚡ Delivered in ~30 Seconds</span>
+  <!-- Before & After Comparison Section -->
+  <section id="before-after" class="py-20 px-6 bg-slate-900/40 border-y border-slate-900">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Real Transformation</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-2 mb-4">Why Most LinkedIn Profiles Get Ignored</h2>
+        <p class="text-slate-400">Recruiters and commercial buyers spend less than 6 seconds scanning your headline and first two lines. Compare the difference:</p>
       </div>
-    </main>
 
-    <section class="features">
-      <div class="feat">
-        <strong>3 High-Impact Headlines</strong>
-        <span>Engineered for LinkedIn search algorithms and instant profile clicks.</span>
-      </div>
-      <div class="feat">
-        <strong>First-Person "About" Bio</strong>
-        <span>Persuasive storytelling with a clear, high-converting call to action.</span>
-      </div>
-      <div class="feat">
-        <strong>30 Tailored Post Hooks</strong>
-        <span>A full month of industry-specific opening lines so you never stare at a blank screen.</span>
-      </div>
-    </section>
-  </div>
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Before Card -->
+        <div class="bg-slate-950 border border-rose-500/25 rounded-2xl p-7">
+          <div class="inline-block px-3 py-1 rounded-md bg-rose-500/10 text-rose-400 text-xs font-bold mb-4">
+            ✕ BEFORE: PASSIVE CV-STYLE PROFILE
+          </div>
+          <p class="font-semibold text-slate-300 mb-3">"Director at ABC Services | Experienced Hard Worker"</p>
+          <p class="text-sm text-slate-400 leading-relaxed mb-4">
+            "I am a hardworking professional with 12 years of experience in my sector. I am passionate about delivering quality work on time and working well in a team or on my own. Looking to connect with new people and grow my network."
+          </p>
+          <ul class="space-y-2 text-xs text-rose-300/80">
+            <li>• Zero searchable buyer keywords</li>
+            <li>• Reads like a job seeker instead of an authority</li>
+            <li>• No clear call-to-action for inbound enquiries</li>
+          </ul>
+        </div>
 
+        <!-- After Card -->
+        <div class="bg-slate-950 border border-emerald-500/35 rounded-2xl p-7 shadow-xl shadow-emerald-950/20">
+          <div class="inline-block px-3 py-1 rounded-md bg-emerald-500/15 text-emerald-300 text-xs font-bold mb-4">
+            ✓ AFTER: PROFILEPULSE AUTHORITY ENGINE
+          </div>
+          <p class="font-semibold text-white mb-3">"Commercial Contractor &amp; Director | Helping Regional Developers Deliver On-Schedule, Zero-Snag Projects"</p>
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">
+            "For 12+ years, I've helped main contractors and commercial developers eliminate site bottlenecks and protect project margins. From initial tender pricing to final handover, our teams bring own-plant reliability and full compliance..."
+          </p>
+          <ul class="space-y-2 text-xs text-emerald-300">
+            <li>• Ranked for high-intent commercial search terms</li>
+            <li>• Positions your track record as clear commercial ROI</li>
+            <li>• Direct, low-friction CTA that converts profile views</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's Included Section -->
+  <section id="whats-included" class="py-20 px-6">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-400">Everything Inside Your £8.99 Pack</span>
+        <h2 class="text-3xl sm:text-4xl font-bold text-white mt-2 mb-4">A Complete Profile &amp; Content System</h2>
+        <p class="text-slate-400">Built specifically around your industry, experience, and commercial goal—ready to copy and paste in under 3 minutes.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center font-bold mb-4">01</div>
+          <h3 class="text-lg font-bold text-white mb-2">3 High-Impact Headlines</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Engineered for LinkedIn search algorithms—pairing your core role with the exact outcome clients and hiring managers search for.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/15 text-sky-400 flex items-center justify-center font-bold mb-4">02</div>
+          <h3 class="text-lg font-bold text-white mb-2">First-Person "About" Bio</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            Persuasive, jargon-free storytelling structured with a scroll-stopping hook, proof of track record, core capabilities, and a direct call to action.
+          </p>
+        </div>
+
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center font-bold mb-4">03</div>
+          <h3 class="text-lg font-bold text-white mb-2">30 Tailored Post Hooks</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">
+            A full month of niche-specific opening lines designed to spark comments, build authority, and keep you top-of-mind with buyers.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section id="how-it-works" class="py-16 px-6 bg-slate-900/40 border-y border-slate-900">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-white">From Blank Page to Live Profile in 3 Steps</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8 text-center">
+        <div>
+          <div class="w-12 h-12 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center mx-auto mb-4">1</div>
+          <h3 class="font-bold text-white mb-2">Paste Your Rough Notes</h3>
+          <p class="text-sm text-slate-400">Drop in your existing bio, CV bullet points, or a quick summary of what you do and who you want to reach.</p>
+        </div>
+        <div>
+          <div class="w-12 h-12 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center mx-auto mb-4">2</div>
+          <h3 class="font-bold text-white mb-2">Preview &amp; Unlock</h3>
+          <p class="text-sm text-slate-400">Inspect your free sample headline immediately, then complete a single £8.99 Stripe checkout with no recurring fees.</p>
+        </div>
+        <div>
+          <div class="w-12 h-12 rounded-full bg-emerald-500 text-slate-950 font-bold flex items-center justify-center mx-auto mb-4">3</div>
+          <h3 class="font-bold text-white mb-2">Copy, Paste &amp; Publish</h3>
+          <p class="text-sm text-slate-400">Receive your full formatted makeover in your inbox within ~30 seconds and paste it straight onto LinkedIn.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-20 px-6">
+    <div class="max-w-5xl mx-auto">
+      <h2 class="text-3xl font-bold text-white text-center mb-12">Trusted by Busy Operators &amp; Specialists</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6">
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">"Had two commercial tenders come through LinkedIn DMs within ten days of updating my headline and About section. Best £9 I've spent on marketing."</p>
+          <div class="text-xs font-bold text-white">Callum M.</div>
+          <div class="text-xs text-slate-500">Construction &amp; Groundworks Director</div>
+        </div>
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6">
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">"I'd put off rewriting my profile for two years because I hate writing about myself. Took 30 seconds and sounded sharper than a £300 copywriter."</p>
+          <div class="text-xs font-bold text-white">Sarah T.</div>
+          <div class="text-xs text-slate-500">Senior Operations Consultant</div>
+        </div>
+        <div class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6">
+          <p class="text-sm text-slate-300 leading-relaxed mb-4">"The 30 post hooks alone paid for it ten times over. I don't stare at a blank screen anymore when posting project updates."</p>
+          <div class="text-xs font-bold text-white">David R.</div>
+          <div class="text-xs text-slate-500">B2B Logistics Founder</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-16 px-6 bg-slate-900/40 border-t border-slate-900">
+    <div class="max-w-3xl mx-auto space-y-4">
+      <h2 class="text-3xl font-bold text-white text-center mb-8">Frequently Asked Questions</h2>
+
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-5">
+        <h3 class="font-bold text-white mb-1.5">Is this a subscription or a one-time payment?</h3>
+        <p class="text-sm text-slate-400">Strictly a one-time payment of £8.99 (automatically converted to your local currency by Stripe). You will never be billed again.</p>
+      </div>
+
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-5">
+        <h3 class="font-bold text-white mb-1.5">How quickly do I receive my full LinkedIn pack?</h3>
+        <p class="text-sm text-slate-400">Your full rewritten bio, 3 headline variations, and 30 custom post hooks are generated and emailed to the address you entered within ~30 seconds of payment.</p>
+      </div>
+
+      <div class="bg-slate-950 border border-slate-800 rounded-xl p-5">
+        <h3 class="font-bold text-white mb-1.5">What if my current bio is rough or just a few bullet points?</h3>
+        <p class="text-sm text-slate-400">That works great. Even rough notes about your trade, job title, years of experience, and target clients give the engine everything it needs to structure an authority profile.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-10 px-6 border-t border-slate-900 text-center text-xs text-slate-500">
+    <p>© 2026 ProfilePulse AI. All rights reserved. Payments securely processed via Stripe.</p>
+  </footer>
+
+  <!-- Interactive Preview & Stripe Checkout Script -->
   <script>
-    // Show confirmation banner if returning from Stripe payment
-    if (new URLSearchParams(window.location.search).get('success') === 'true') {
-      document.getElementById('success-banner').style.display = 'block';
-    }
+    const form = document.getElementById('preview-form');
+    const previewOutput = document.getElementById('preview-output');
+    const sampleHeadline = document.getElementById('sample-headline');
+    const checkoutBtn = document.getElementById('checkout-btn');
 
-    function generateFreePreview() {
-      const email = document.getElementById('email').value.trim();
-      const goal = document.getElementById('goal').value.trim();
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
       const bio = document.getElementById('bio').value.trim();
-
-      if (!email || !email.includes('@')) {
-        alert('Please enter a valid email address where your pack will be delivered.');
-        document.getElementById('email').focus();
-        return;
-      }
-      if (!goal || !bio) {
-        alert('Please enter both your Primary Goal and your Bio/Experience to generate your preview.');
-        return;
-      }
-
-      // Build 1 sharp tailored headline line from their actual input
-      const cleanGoal = goal.replace(/\.$/, '');
-      const firstSnippet = bio.split(/[\.\n]/)[0].trim().slice(0, 65);
-      const sampleLine = `${firstSnippet} | Helping Organizations ${cleanGoal.charAt(0).toUpperCase() + cleanGoal.slice(1)}`;
-
-      document.getElementById('free-headline').textContent = sampleLine;
-
-      // Populate blurred bio teaser using their actual text so it feels unmistakably personalized behind the blur
-      document.getElementById('blurred-bio-text').textContent =
-        `With a proven track record in ${bio.slice(0, 140)}..., I specialize in helping teams and decision-makers ${cleanGoal.toLowerCase()}. Over the course of my career, I have combined hands-on execution with commercial focus to deliver measurable results...`;
-
-      const previewSection = document.getElementById('preview-section');
-      previewSection.style.display = 'block';
-      previewSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-      document.getElementById('preview-btn').textContent = '↻ Refresh Free Preview';
-    }
-
-    async function startSeamlessCheckout() {
-      const email = document.getElementById('email').value.trim();
       const goal = document.getElementById('goal').value.trim();
-      const bio = document.getElementById('bio').value.trim();
-      const btn = document.getElementById('checkout-btn');
 
-      if (!email || !goal || !bio) {
-        alert('Please fill in your email, goal, and bio above before continuing.');
+      const firstChunk = bio.split(/[\.\n,]/)[0].trim().slice(0, 65) || 'Industry Specialist';
+      const cleanGoal = goal.replace(/^to\s+/i, '').trim();
+      sampleHeadline.textContent = `${firstChunk} | Helping Organisations ${cleanGoal.charAt(0).toUpperCase() + cleanGoal.slice(1)} Without the Guesswork`;
+
+      previewOutput.classList.remove('hidden');
+      previewOutput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    checkoutBtn.addEventListener('click', async function () {
+      const email = document.getElementById('email').value.trim();
+      const bio = document.getElementById('bio').value.trim();
+      const goal = document.getElementById('goal').value.trim();
+
+      if (!email || !bio || !goal) {
+        alert('Please fill in your email, goal, and bio first.');
         return;
       }
 
-      const originalText = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = 'Connecting to Secure Checkout...';
+      const originalText = checkoutBtn.textContent;
+      checkoutBtn.disabled = true;
+      checkoutBtn.textContent = 'Connecting to Secure Checkout...';
 
       try {
         const res = await fetch('/.netlify/functions/create-checkout', {
@@ -495,20 +347,19 @@
         });
 
         const data = await res.json();
-
         if (data.url) {
           window.location.href = data.url;
         } else {
-          alert(data.error || 'Unable to start checkout. Please check your details and try again.');
-          btn.disabled = false;
-          btn.textContent = originalText;
+          alert(data.error || 'Unable to start checkout. Please try again.');
+          checkoutBtn.disabled = false;
+          checkoutBtn.textContent = originalText;
         }
       } catch (err) {
         alert('Network error connecting to checkout. Please try again.');
-        btn.disabled = false;
-        btn.textContent = originalText;
+        checkoutBtn.disabled = false;
+        checkoutBtn.textContent = originalText;
       }
-    }
+    });
   </script>
 </body>
 </html>
