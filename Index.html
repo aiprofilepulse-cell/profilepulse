@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#090D16" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>ProfilePulse AI — Instant LinkedIn Profile & Content Overhaul</title>
+  <link rel="manifest" href="/manifest.json" />
+  <style>
+    :root {
+      --bg: #090D16;
+      --card: #111827;
+      --card-border: #1F2937;
+      --text: #F9FAFB;
+      --muted: #9CA3AF;
+      --accent: #3B82F6;
+      --accent-hover: #2563EB;
+      --emerald: #10B981;
+      --gold: #F59E0B;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #131C31 0%, var(--bg) 55%);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      padding-bottom: 4rem;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0 2rem;
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .badge {
+      background: rgba(16, 185, 129, 0.14);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 2.25rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.9rem, 4.5vw, 2.85rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, #60A5FA, #34D399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .success-banner {
+      display: none;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--emerald);
+      color: #D1FAE5;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 1.75rem;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    .step-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    .card h2 {
+      font-size: 1.35rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.15rem;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #E5E7EB;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: #0B101B;
+      border: 1px solid #283347;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      font-size: 0.98rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    textarea {
+      min-height: 115px;
+      resize: vertical;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.12s, background 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.99);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #1D4ED8);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #60A5FA, var(--accent-hover));
+    }
+
+    .btn-unlock {
+      background: linear-gradient(135deg, var(--emerald), #059669);
+      color: #fff;
+      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
+      font-size: 1.1rem;
+    }
+
+    .btn-unlock:hover {
+      background: linear-gradient(135deg, #34D399, #059669);
+    }
+
+    .btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    /* Preview & Blur Lock Section */
+    #preview-section {
+      display: none;
+      margin-top: 1.75rem;
+      animation: fadeIn 0.35s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .unlocked-box {
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: 12px;
+      padding: 1.15rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .unlocked-tag {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .headline-sample {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .locked-wrapper {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #283347;
+      background: #0B101B;
+      padding: 1.35rem;
+    }
+
+    .blurred-content {
+      filter: blur(6.5px);
+      user-select: none;
+      pointer-events: none;
+      opacity: 0.62;
+      color: #D1D5DB;
+      font-size: 0.95rem;
+    }
+
+    .blurred-content h3 {
+      color: #fff;
+      margin: 0.85rem 0 0.35rem;
+      font-size: 1rem;
+    }
+
+    .lock-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(9, 13, 22, 0.45) 0%, rgba(9, 13, 22, 0.94) 60%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.5rem;
+    }
+
+    .lock-pill {
+      background: rgba(245, 158, 11, 0.16);
+      border: 1px solid rgba(245, 158, 11, 0.45);
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 0.65rem;
+    }
+
+    .lock-overlay h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .lock-overlay p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      max-width: 440px;
+      margin-bottom: 1.15rem;
+    }
+
+    .trust-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.25rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .feat {
+      background: rgba(17, 24, 39, 0.65);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.15rem;
+    }
+
+    .feat strong {
+      display: block;
+      font-size: 0.98rem;
+      margin-bottom: 0.3rem;
+      color: #F3F4F6;
+    }
+
+    .feat span {
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">⚡ Profile<span>Pulse</span> AI</div>
+      <div class="badge">Global AI Engine</div>
+    </header>
+
+    <div id="success-banner" class="success-banner">
+      ✅ Payment confirmed! Your complete ProfilePulse AI LinkedIn Overhaul is being generated right now and will arrive in your inbox within 30 seconds.
+    </div>
+
+    <section class="hero">
+      <h1>Turn Your LinkedIn Into a <span>Client & Recruiter Magnet</span> in 30 Seconds</h1>
+      <p>Test our AI free below. Get an instant headline preview now—then unlock your full rewritten "About" bio, 3 authority headlines, and 30 viral post hooks delivered straight to your email.</p>
+    </section>
+
+    <main class="card">
+      <span class="step-label">Step 1 — Free Instant Preview</span>
+      <h2>Enter Your Details to Preview Your Rewrite</h2>
+
+      <div class="form-group">
+        <label for="email">Delivery Email Address *</label>
+        <input type="email" id="email" placeholder="you@company.com" required />
+      </div>
+
+      <div class="form-group">
+        <label for="goal">Primary Career or Business Goal *</label>
+        <input type="text" id="goal" placeholder="e.g., Land senior project management roles / Attract B2B commercial clients" required />
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Current Bio, CV Summary, or Experience *</label>
+        <textarea id="bio" placeholder="Paste your current LinkedIn bio, job title, key wins, or skills..." required></textarea>
+      </div>
+
+      <button type="button" id="preview-btn" class="btn btn-primary" onclick="generateFreePreview()">
+        ⚡ Try Free Preview Now
+      </button>
+
+      <!-- Try Before You Buy Output (1 Line Unlocked + Blurred Full Pack) -->
+      <div id="preview-section">
+        <div class="unlocked-box">
+          <div class="unlocked-tag">✓ Free Sample Line Unlocked</div>
+          <div id="free-headline" class="headline-sample"></div>
+        </div>
+
+        <div class="locked-wrapper">
+          <div id="blurred-preview" class="blurred-content">
+            <h3>1. Rewritten High-Authority LinkedIn "About" Bio</h3>
+            <p id="blurred-bio-text"></p>
+            <h3>2. Two Additional Executive & Search-Optimized Headlines</h3>
+            <p>Driving measurable commercial growth and operational excellence across competitive international markets with proven leadership and repeatable delivery systems.</p>
+            <h3>3. 30 Scroll-Stopping LinkedIn Post Hooks Tailored to Your Niche</h3>
+            <p>• Most professionals make this costly mistake before pitching high-value clients—here is the exact framework I use instead...<br>• 5 lessons learned scaling projects from scratch without burning budget or missing deadlines...</p>
+          </div>
+
+          <div class="lock-overlay">
+            <div class="lock-pill">🔒 Full Bio & 30 Post Hooks Locked</div>
+            <h3>Unlock Your Complete LinkedIn Overhaul</h3>
+            <p>Your details are already loaded. One click below opens secure checkout—zero extra forms—and emails your full pack immediately.</p>
+            <button type="button" id="checkout-btn" class="btn btn-unlock" onclick="startSeamlessCheckout()">
+              Unlock Full Profile Pack — £8.99
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="trust-row">
+        <span>🔒 256-Bit Stripe Checkout</span>
+        <span>🌍 Auto-Converts to Local Currency</span>
+        <span>⚡ Delivered in ~30 Seconds</span>
+      </div>
+    </main>
+
+    <section class="features">
+      <div class="feat">
+        <strong>3 High-Impact Headlines</strong>
+        <span>Engineered for LinkedIn search algorithms and instant profile clicks.</span>
+      </div>
+      <div class="feat">
+        <strong>First-Person "About" Bio</strong>
+        <span>Persuasive storytelling with a clear, high-converting call to action.</span>
+      </div>
+      <div class="feat">
+        <strong>30 Tailored Post Hooks</strong>
+        <span>A full month of industry-specific opening lines so you never stare at a blank screen.</span>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // Show confirmation banner if returning from Stripe payment
+    if (new URLSearchParams(window.location.search).get('success') === 'true') {
+      document.getElementById('success-banner').style.display = 'block';
+    }
+
+    function generateFreePreview() {
+      const email = document.getElementById('email').value.trim();
+      const goal = document.getElementById('goal').value.trim();
+      const bio = document.getElementById('bio').value.trim();
+
+      if (!email || !email.includes('@')) {
+        alert('Please enter a valid email address where your pack will be delivered.');
+        document.getElementById('email').focus();
+        return;
+      }
+      if (!goal || !bio) {
+        alert('Please enter both your Primary Goal and your Bio/Experience to generate your preview.');
+        return;
+      }
+
+      // Build 1 sharp tailored headline line from their actual input
+      const cleanGoal = goal.replace(/\.$/, '');
+      const firstSnippet = bio.split(/[\.\n]/)[0].trim().slice(0, 65);
+      const sampleLine = `${firstSnippet} | Helping Organizations ${cleanGoal.charAt(0).toUpperCase() + cleanGoal.slice(1)}`;
+
+      document.getElementById('free-headline').textContent = sampleLine;
+
+      // Populate blurred bio teaser using their actual text so it feels unmistakably personalized behind the blur
+      document.getElementById('blurred-bio-text').textContent =
+        `With a proven track record in ${bio.slice(0, 140)}..., I specialize in helping teams and decision-makers ${cleanGoal.toLowerCase()}. Over the course of my career, I have combined hands-on execution with commercial focus to deliver measurable results...`;
+
+      const previewSection = document.getElementById('preview-section');
+      previewSection.style.display = 'block';
+      previewSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      document.getElementById('preview-btn').textContent = '↻ Refresh Free Preview';
+    }
+
+    async function startSeamlessCheckout() {
+      const email = document.getElementById('email').value.trim();
+      const goal = document.getElementById('goal').value.trim();
+      const bio = document.getElementById('bio').value.trim();
+      const btn = document.getElementById('checkout-btn');
+
+      if (!email || !goal || !bio) {
+        alert('Please fill in your email, goal, and bio above before continuing.');
+        return;
+      }
+
+      const originalText = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'Connecting to Secure Checkout...';
+
+      try {
+        const res = await fetch('/.netlify/functions/create-checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, bio, goal })
+        });
+
+        const data = await res.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert(data.error || 'Unable to start checkout. Please check your details and try again.');
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
+      } catch (err) {
+        alert('Network error connecting to checkout. Please try again.');
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    }
+  </script>
+</body>
+</html>
